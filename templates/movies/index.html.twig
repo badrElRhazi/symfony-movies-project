@@ -1,5 +1,9 @@
-{% if title %}
-    <p>{{title}} , is a movie</p>
-{% else %}
-    <p>no title has been added</p>
-{% endif %}
+{% extends "base.html.twig" %}
+
+
+{% block body %}
+    
+    {% for movie in movies %}
+        <li>{{movie}}</li>
+    {% endfor %}
+{% endblock %}
