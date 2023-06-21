@@ -13,18 +13,9 @@ class MoviesController extends AbstractController
     public function index(): Response
     {
         return $this->render('movies/index.html.twig', [
-            'controller_name' => 'MoviesController',
+            'title' => 'Avengers : Endgame'
         ]);
     }    
     
-     /**
-      * oldMethod
-      *
-      * @Route("/old", name="old")
-      */
-     public function oldMethod(): Response{
-        return $this->render('movies/index.html.twig', [
-            'controller_name' => 'MoviesController',
-        ]);
-    }
+     
 }
