@@ -28,7 +28,7 @@ class MoviesController extends AbstractController
         // find(x) - SELECT * FROM movies where id =x
         //findBy() - SELECT * FROM movies ORDER BY id DESC
         $repository = $this ->em -> getRepository(Movie::class);
-        $movies =$repository -> findBy([],  ['id' => 'DESC']);
+        $movies =$repository -> findOneBy(['id'=>6, 'title'=>'Casablanca'],  ['id' => 'DESC']);
 
         dd($movies);
 
