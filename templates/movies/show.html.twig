@@ -1,31 +1,53 @@
-{% extends "./base.html.twig" %}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ movie.title }}{% endblock %}
 
 {% block body %}
-    <div class="sm:w-3/5 w-4/5 mx-auto">
-        <h1 class="pt-20 sm:text-5xl md:text-7xl text-4xl font-bold text-center">
-            {{ movie.title }}
-        </h1>
-
-        <div class="py-10 text-center">
-            <div class="inline-block sm:pt-1">
-                <h2 class="font-bold">
-                    Created by: Badr
-                </h2>
-
-                <p class="text-sm text-gray-600">
-                    28-01-2022 4 min. read
-                </p>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+      <div class="px-4 py-5 sm:px-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">
+          {{ movie.title }}
+        </h3>
+      </div>
+      <div class="bg-gray-100 px-4 py-5 sm:p-0">
+        <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
+          <div class="text-center sm:text-left">
+            <img src="{{ movie.imagePath }}" alt="{{ movie.title }}" class="mx-auto sm:mx-0 sm:h-72 sm:w-72 rounded-lg shadow-lg">
+          </div>
+          <div class="mt-5 sm:mt-0 sm:col-span-2">
+            <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+              <div class="sm:col-span-2">
+                <dt class="text-sm font-bold text-Gray-500">
+                  Description
+                </dt>
+                <dd class="mt-1 max-w-2xl text-sm text-gray-900">
+                  {{ movie.description }}
+                </dd>
             </div>
+            <div class="sm:col-span-2">
+                <dt class="text-sm font-medium text-gray-500">
+                  Actors
+                </dt>
+                <dd class="mt-1 max-w-2xl text-sm text-gray-900">
+                  <ul class="list-[upper-roman]">
+                  {% for actt in act %}
+                    <li>{{ actt.name }}</li>
+                  {% endfor %}
+                  </ul>
+                </dd>
+              {# <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">
+                  ID
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900">
+                  {{ movie.id }}
+                </dd>
+              </div> #}
+            </dl>
+          </div>
         </div>
-
-        <img
-            src="{{ movie.imagePath }}"
-            class="rounded-xl w-full shadow-xl"
-            alt="Icon of Badr"
-        />
-
-        <p class="text-xl py-6">
-            {{ movie.description }}
-        </p>
+      </div>
     </div>
+  </div>
 {% endblock %}
