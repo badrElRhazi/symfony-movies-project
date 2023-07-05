@@ -60,7 +60,7 @@ class MoviesController extends AbstractController
 
                 $newMovie->setImagePath('/uploads/' . $newFileName);
             }
-
+            
             $this->em->persist($newMovie);
             $this->em->flush();
 
@@ -70,6 +70,58 @@ class MoviesController extends AbstractController
         return $this->render('movies/create.html.twig',[
             'form' => $form->createView()
         ]);
+    }
+    #[Route('/movies/edit/{id}' , name: 'edit_movie')]
+    public function edit($id, Request $request): Response
+{
+    $movie = $this->movieRepository->find($id);
+    $form = $this->createForm(MovieFormType::class, $movie);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $movie->setTitle($form->get('title')->getData());
+        $movie->setReleaseYear($form->get('releaseYear')->getData());
+        $movie->setDescription($form->get('description')->getData());
+
+        $imageFile = $form->get('imagePath')->getData();
+        if ($imageFile) {
+            // Generate a unique filename for the uploaded file
+            $newFilename = uniqid() . '.' . $imageFile->guessExtension();
+
+            // Move the file to the target directory
+            try {
+                $imageFile->move(
+                    $this->getParameter('kernel.project_dir') . '/public/uploads',
+                    $newFilename
+                );
+            } catch (FileException $e) {
+                // Handle the exception if the file upload fails
+                return new Response($e->getMessage());
+            }
+
+            // Update the movie with the new image path
+            $movie->setImagePath('/uploads/' . $newFilename);
+        }
+
+        // Save the updated movie to the database
+        $this->em->flush();
+
+        return $this->redirectToRoute('app_movies');
+    }
+
+    return $this->render('movies/edit.html.twig', [
+        'movie' => $movie,
+        'form' => $form->createView()
+    ]);
+}
+    #[Route('/movies/delete/{id}', methods:['GET', 'DELETE'], name: 'delete_movie')]
+    public function delete($id): Response 
+    {
+        $movie=$this->movieRepository->find($id);
+        $this->em->remove($movie);
+        $this->em->flush();
+
+        return $this->redirectToRoute('app_movies');
     }
     #[Route('/movies/{id}', methods: ['GET'], name: 'show_movie')]
     public function show($id): Response
